@@ -48,7 +48,58 @@ const columns: DataTableColumn<TrendingCoin>[] = [
   {
     header: "Price",
     cellClassName: "name-cell",
-    cell: (coin) => coin.item.data.price,
+    cell: (coin) => `$${coin.item.data.price.toLocaleString()}`,
+  },
+];
+
+const dummyCoinData = [
+  {
+    item: {
+      id: "bitcoin",
+      name: "Bitcoin",
+      symbol: "BTC",
+      market_cap_rank: 1,
+      thumb: "https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png",
+      large: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+      data: {
+        price: 64320.5,
+        price_change_percentage_24h: {
+          usd: 2.45,
+        },
+      },
+    },
+  },
+  {
+    item: {
+      id: "ethereum",
+      name: "Ethereum",
+      symbol: "ETH",
+      market_cap_rank: 2,
+      thumb: "https://assets.coingecko.com/coins/images/279/thumb/ethereum.png",
+      large: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+      data: {
+        price: 3480.12,
+        price_change_percentage_24h: {
+          usd: -1.15,
+        },
+      },
+    },
+  },
+  {
+    item: {
+      id: "solana",
+      name: "Solana",
+      symbol: "SOL",
+      market_cap_rank: 5,
+      thumb: "https://assets.coingecko.com/coins/images/4128/thumb/solana.png",
+      large: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+      data: {
+        price: 145.8,
+        price_change_percentage_24h: {
+          usd: 5.82,
+        },
+      },
+    },
   },
 ];
 
@@ -73,7 +124,8 @@ const Page = () => {
         <p>Trending Coins</p>
         <DataTable
           columns={columns}
-          data={[]}
+          data={dummyCoinData}
+          rowKey={(coin) => coin.item.id}
           tableClassName="trending-coins-table"
         />
       </section>
