@@ -1,4 +1,4 @@
-import DataTable from "../ui/DataTable";
+import DataTable from "../DataTable";
 
 export const CoinOverviewFallback = () => {
   return (
