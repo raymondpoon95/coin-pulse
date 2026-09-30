@@ -1,5 +1,5 @@
 import React from "react";
-import DataTable from "../ui/DataTable";
+import DataTable from "../DataTable";
 import { fetcher } from "@/lib/coingecko.actions";
 import Link from "next/link";
 import Image from "next/image";
