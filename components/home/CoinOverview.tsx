@@ -17,8 +17,6 @@ const CoinOverview = async () => {
       }),
     ]);
 
-    console.log(coinOHLCData);
-
     return (
       <div id="coin-overview">
         <CandlestickChart data={coinOHLCData} coinId="bitcoin">
