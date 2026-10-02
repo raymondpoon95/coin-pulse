@@ -13,8 +13,6 @@ interface CandlestickChartProps {
   children?: React.ReactNode;
   mode?: "historical" | "live";
   initialPeriod?: Period;
-  liveInterval: "1s" | "1m";
-  setLiveInterval: (interval: "1s" | "1m") => void;
 }
 
 interface ConverterProps {
@@ -136,10 +134,36 @@ interface PriceData {
 
 interface Trade {
   price?: number;
-  timestamp?: number;
+  timestamp?: string | number | Date;
   type?: string;
   amount?: number;
   value?: number;
+}
+interface TradeAttributes {
+  block_number: number;
+  tx_hash: string;
+  tx_from_address: string;
+  from_token_amount: string;
+  to_token_amount: string;
+  price_from_in_currency_token: string;
+  price_to_in_currency_token: string;
+  price_from_in_usd: string;
+  price_to_in_usd: string;
+  block_timestamp: string; // ISO 8601 string
+  kind: "buy" | "sell";
+  volume_in_usd: string;
+  from_token_address: string;
+  to_token_address: string;
+}
+
+interface TradeData {
+  id: string;
+  type: "trade";
+  attributes: TradeAttributes;
+}
+
+interface TradesResponse {
+  data: TradeData[];
 }
 
 interface ExtendedPriceData {
