@@ -13,8 +13,6 @@ interface CandlestickChartProps {
   children?: React.ReactNode;
   mode?: "historical" | "live";
   initialPeriod?: Period;
-  liveInterval: "1s" | "1m";
-  setLiveInterval: (interval: "1s" | "1m") => void;
 }
 
 interface ConverterProps {
@@ -34,6 +32,35 @@ interface Ticker {
   };
   timestamp: string;
   trade_url: string;
+}
+
+interface CoinTickersResponse {
+  name: string;
+  tickers: TickerResponse[];
+}
+
+interface TickerResponse {
+  base: string;
+  target: string;
+  market: Market;
+  last: number;
+  volume: number;
+  cost_to_move_up_usd: number;
+  cost_to_move_down_usd: number;
+  converted_last: ConvertedValues;
+  converted_volume: ConvertedValues;
+  trust_score: "green" | "yellow" | "red" | null;
+  bid_ask_spread_percentage: number;
+  timestamp: string; // ISO 8601 string
+  last_traded_at: string;
+  last_fetch_at: string;
+  is_anomaly: boolean;
+  is_stale: boolean;
+  trade_url: string | null;
+  token_info_url: string | null;
+  coin_id: string;
+  target_coin_id?: string;
+  coin_mcap_usd: number;
 }
 
 type Period = "daily" | "weekly" | "monthly" | "3months" | "6months" | "yearly" | "max";
@@ -136,10 +163,36 @@ interface PriceData {
 
 interface Trade {
   price?: number;
-  timestamp?: number;
+  timestamp?: string | number | Date;
   type?: string;
   amount?: number;
   value?: number;
+}
+interface TradeAttributes {
+  block_number: number;
+  tx_hash: string;
+  tx_from_address: string;
+  from_token_amount: string;
+  to_token_amount: string;
+  price_from_in_currency_token: string;
+  price_to_in_currency_token: string;
+  price_from_in_usd: string;
+  price_to_in_usd: string;
+  block_timestamp: string; // ISO 8601 string
+  kind: "buy" | "sell";
+  volume_in_usd: string;
+  from_token_address: string;
+  to_token_address: string;
+}
+
+interface TradeData {
+  id: string;
+  type: "trade";
+  attributes: TradeAttributes;
+}
+
+interface TradesResponse {
+  data: TradeData[];
 }
 
 interface ExtendedPriceData {
@@ -256,8 +309,7 @@ interface UseCoinGeckoWebSocketProps {
 interface UseCoinGeckoWebSocketReturn {
   price: ExtendedPriceData | null;
   trades: Trade[];
-  ohlcv: OHLCData | null;
-  isConnected: boolean;
+  tickers: Ticker[];
 }
 
 interface DataTableColumn<T> {
