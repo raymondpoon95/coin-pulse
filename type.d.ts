@@ -34,6 +34,35 @@ interface Ticker {
   trade_url: string;
 }
 
+interface CoinTickersResponse {
+  name: string;
+  tickers: TickerResponse[];
+}
+
+interface TickerResponse {
+  base: string;
+  target: string;
+  market: Market;
+  last: number;
+  volume: number;
+  cost_to_move_up_usd: number;
+  cost_to_move_down_usd: number;
+  converted_last: ConvertedValues;
+  converted_volume: ConvertedValues;
+  trust_score: "green" | "yellow" | "red" | null;
+  bid_ask_spread_percentage: number;
+  timestamp: string; // ISO 8601 string
+  last_traded_at: string;
+  last_fetch_at: string;
+  is_anomaly: boolean;
+  is_stale: boolean;
+  trade_url: string | null;
+  token_info_url: string | null;
+  coin_id: string;
+  target_coin_id?: string;
+  coin_mcap_usd: number;
+}
+
 type Period = "daily" | "weekly" | "monthly" | "3months" | "6months" | "yearly" | "max";
 
 interface CoinMarketData {
@@ -280,8 +309,7 @@ interface UseCoinGeckoWebSocketProps {
 interface UseCoinGeckoWebSocketReturn {
   price: ExtendedPriceData | null;
   trades: Trade[];
-  ohlcv: OHLCData | null;
-  isConnected: boolean;
+  tickers: Ticker[];
 }
 
 interface DataTableColumn<T> {

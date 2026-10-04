@@ -4,11 +4,11 @@ import { Separator } from "./ui/separator";
 import CandlestickChart from "./CandlestickChart";
 import { formatCurrency, timeAgo } from "@/lib/utils";
 import DataTable from "./DataTable";
-import { useCoinGeckoWebSocket } from "@/hooks/useCoinGeckoWebSocket";
+import { useGetTradeAndTickerData } from "@/hooks/useGetTradeAndTickerData";
 import CoinHeader from "./CoinHeader";
 
-const LiveDataWrapper = ({ coinId, poolId, coin, coinOHLCData }: LiveDataProps) => {
-  const { trades, price } = useCoinGeckoWebSocket({ coinId, poolId });
+const LiveDataWrapper = ({ coinId, poolId, coin, coinOHLCData, children }: LiveDataProps) => {
+  const { trades, price } = useGetTradeAndTickerData({ coinId, poolId });
 
   const tradeColumns: DataTableColumn<Trade>[] = [
     {
@@ -65,6 +65,8 @@ const LiveDataWrapper = ({ coinId, poolId, coin, coinOHLCData }: LiveDataProps) 
           <DataTable columns={tradeColumns} data={trades} rowKey={(_, index) => index} tableClassName="trades-table" />
         </div>
       )}
+
+      {children}
     </section>
   );
 };

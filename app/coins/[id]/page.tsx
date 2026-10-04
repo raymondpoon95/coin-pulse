@@ -1,9 +1,12 @@
-import Converter from "@/components/Converter";
-import LiveDataWrapper from "@/components/LiveDataWrapper";
+import Link from "next/link";
+
 import { fetcher, getPools } from "@/lib/coingecko.actions";
 import { formatCurrency } from "@/lib/utils";
+import Converter from "@/components/Converter";
+import ExchangeListingsTable from "@/components/ExchangeListingsTable";
+import LiveDataWrapper from "@/components/LiveDataWrapper";
+
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 
 const page = async ({ params }: NextPageProps) => {
   const { id } = await params;
@@ -60,9 +63,7 @@ const page = async ({ params }: NextPageProps) => {
   return (
     <main id="coin-details-page">
       <section className="primary">
-        <LiveDataWrapper coinId={id} poolId={pool.id} coin={coinData} coinOHLCData={coinOHLCData}>
-          <h4>Exchange Listings</h4>
-        </LiveDataWrapper>
+        <LiveDataWrapper coinId={id} poolId={pool.id} coin={coinData} coinOHLCData={coinOHLCData}></LiveDataWrapper>
       </section>
 
       <section className="secondary">
@@ -90,8 +91,10 @@ const page = async ({ params }: NextPageProps) => {
             ))}
           </ul>
         </div>
+      </section>
 
-        <p>Top Gainers and Losers</p>
+      <section className="primary">
+        <ExchangeListingsTable coinId={id} poolId={pool.id} coin={coinData} />
       </section>
     </main>
   );

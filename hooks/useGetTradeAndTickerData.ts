@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetcher } from "@/lib/coingecko.actions";
 
-// to do - remove hook or refactor as useTradeData
-export const useCoinGeckoWebSocket = ({ coinId, poolId, liveInterval }: UseCoinGeckoWebSocketProps): UseCoinGeckoWebSocketReturn => {
-  const wsRef = useRef<WebSocket | null>(null);
-  const subscribeRef = useRef(<Set<string>>new Set());
-
+export const useGetTradeAndTickerData = ({ coinId, poolId }: UseCoinGeckoWebSocketProps): UseCoinGeckoWebSocketReturn => {
   const [price, setPrice] = useState<ExtendedPriceData | null>(null);
   const [trades, setTrades] = useState<Trade[]>([]);
-  const [ohlcv, setOhlcv] = useState<OHLCData | null>(null);
+  const [tickers, setTickers] = useState<Ticker[]>([]);
 
   useEffect(() => {
     const getTradeData = async () => {
@@ -35,13 +31,40 @@ export const useCoinGeckoWebSocket = ({ coinId, poolId, liveInterval }: UseCoinG
       setTrades(newData);
     };
 
-    getTradeData();
-  }, []);
+    const getTickerData = async () => {
+      const response = await fetcher<CoinTickersResponse>(`/coins/${coinId}/tickers`);
+      const tickerData = response.tickers.slice(0, 10);
+
+      const newTickerData = tickerData.map((item) => {
+        const { base, target, timestamp, trade_url, market, converted_last } = item;
+
+        const newTicker: Ticker = {
+          market,
+          base,
+          target,
+          converted_last,
+          timestamp,
+          trade_url: trade_url ?? "",
+        };
+
+        return newTicker;
+      });
+      setTickers(newTickerData);
+    };
+
+    const fetchData = async () => {
+      try {
+        await Promise.all([getTickerData(), getTradeData()]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [coinId, poolId]);
 
   return {
     trades,
     price,
-    ohlcv,
-    isConnected: false,
+    tickers,
   };
 };
