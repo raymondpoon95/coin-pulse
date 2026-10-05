@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import SearchModal from "./SearchModal";
 
 const Header = () => {
   const pathname = usePathname();
@@ -12,12 +13,7 @@ const Header = () => {
     <header>
       <div className="main-container inner">
         <Link href="/">
-          <Image
-            src="/logo.svg"
-            alt="coin pulse logo"
-            width={142}
-            height={40}
-          />
+          <Image src="/logo.svg" alt="coin pulse logo" width={142} height={40} />
         </Link>
 
         <nav>
@@ -31,7 +27,9 @@ const Header = () => {
             Home
           </Link>
 
-          <p>Search Modal</p>
+          <div>
+            <SearchModal />
+          </div>
 
           <Link
             href="/coins"
